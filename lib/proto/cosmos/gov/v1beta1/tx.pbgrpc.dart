@@ -1,48 +1,53 @@
 ///
+//  Generated code. Do not modify.
+//  source: cosmos/gov/v1beta1/tx.proto
+//
+// @dart = 2.12
+// ignore_for_file: annotate_overrides,camel_case_types,unnecessary_const,non_constant_identifier_names,library_prefixes,unused_import,unused_shown_name,return_of_invalid_type,unnecessary_this,prefer_final_fields
+
 import 'dart:async' as $async;
+
 import 'dart:core' as $core;
 
 import 'package:grpc/service_api.dart' as $grpc;
-
-import 'tx.pb.dart' as $1;
-
+import 'tx.pb.dart' as $0;
 export 'tx.pb.dart';
 
 class MsgClient extends $grpc.Client {
   static final _$submitProposal =
-      $grpc.ClientMethod<$1.MsgSubmitProposal, $1.MsgSubmitProposalResponse>(
+      $grpc.ClientMethod<$0.MsgSubmitProposal, $0.MsgSubmitProposalResponse>(
           '/cosmos.gov.v1beta1.Msg/SubmitProposal',
-          ($1.MsgSubmitProposal value) => value.writeToBuffer(),
+          ($0.MsgSubmitProposal value) => value.writeToBuffer(),
           ($core.List<$core.int> value) =>
-              $1.MsgSubmitProposalResponse.fromBuffer(value));
-  static final _$vote = $grpc.ClientMethod<$1.MsgVote, $1.MsgVoteResponse>(
+              $0.MsgSubmitProposalResponse.fromBuffer(value));
+  static final _$vote = $grpc.ClientMethod<$0.MsgVote, $0.MsgVoteResponse>(
       '/cosmos.gov.v1beta1.Msg/Vote',
-      ($1.MsgVote value) => value.writeToBuffer(),
-      ($core.List<$core.int> value) => $1.MsgVoteResponse.fromBuffer(value));
+      ($0.MsgVote value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $0.MsgVoteResponse.fromBuffer(value));
   static final _$deposit =
-      $grpc.ClientMethod<$1.MsgDeposit, $1.MsgDepositResponse>(
+      $grpc.ClientMethod<$0.MsgDeposit, $0.MsgDepositResponse>(
           '/cosmos.gov.v1beta1.Msg/Deposit',
-          ($1.MsgDeposit value) => value.writeToBuffer(),
+          ($0.MsgDeposit value) => value.writeToBuffer(),
           ($core.List<$core.int> value) =>
-              $1.MsgDepositResponse.fromBuffer(value));
+              $0.MsgDepositResponse.fromBuffer(value));
 
   MsgClient($grpc.ClientChannel channel,
       {$grpc.CallOptions? options,
       $core.Iterable<$grpc.ClientInterceptor>? interceptors})
       : super(channel, options: options, interceptors: interceptors);
 
-  $grpc.ResponseFuture<$1.MsgSubmitProposalResponse> submitProposal(
-      $1.MsgSubmitProposal request,
+  $grpc.ResponseFuture<$0.MsgSubmitProposalResponse> submitProposal(
+      $0.MsgSubmitProposal request,
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$submitProposal, request, options: options);
   }
 
-  $grpc.ResponseFuture<$1.MsgVoteResponse> vote($1.MsgVote request,
+  $grpc.ResponseFuture<$0.MsgVoteResponse> vote($0.MsgVote request,
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$vote, request, options: options);
   }
 
-  $grpc.ResponseFuture<$1.MsgDepositResponse> deposit($1.MsgDeposit request,
+  $grpc.ResponseFuture<$0.MsgDepositResponse> deposit($0.MsgDeposit request,
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$deposit, request, options: options);
   }
@@ -53,50 +58,50 @@ abstract class MsgServiceBase extends $grpc.Service {
 
   MsgServiceBase() {
     $addMethod(
-        $grpc.ServiceMethod<$1.MsgSubmitProposal, $1.MsgSubmitProposalResponse>(
+        $grpc.ServiceMethod<$0.MsgSubmitProposal, $0.MsgSubmitProposalResponse>(
             'SubmitProposal',
             submitProposal_Pre,
             false,
             false,
             ($core.List<$core.int> value) =>
-                $1.MsgSubmitProposal.fromBuffer(value),
-            ($1.MsgSubmitProposalResponse value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$1.MsgVote, $1.MsgVoteResponse>(
+                $0.MsgSubmitProposal.fromBuffer(value),
+            ($0.MsgSubmitProposalResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.MsgVote, $0.MsgVoteResponse>(
         'Vote',
         vote_Pre,
         false,
         false,
-        ($core.List<$core.int> value) => $1.MsgVote.fromBuffer(value),
-        ($1.MsgVoteResponse value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$1.MsgDeposit, $1.MsgDepositResponse>(
+        ($core.List<$core.int> value) => $0.MsgVote.fromBuffer(value),
+        ($0.MsgVoteResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.MsgDeposit, $0.MsgDepositResponse>(
         'Deposit',
         deposit_Pre,
         false,
         false,
-        ($core.List<$core.int> value) => $1.MsgDeposit.fromBuffer(value),
-        ($1.MsgDepositResponse value) => value.writeToBuffer()));
+        ($core.List<$core.int> value) => $0.MsgDeposit.fromBuffer(value),
+        ($0.MsgDepositResponse value) => value.writeToBuffer()));
   }
 
-  $async.Future<$1.MsgSubmitProposalResponse> submitProposal_Pre(
+  $async.Future<$0.MsgSubmitProposalResponse> submitProposal_Pre(
       $grpc.ServiceCall call,
-      $async.Future<$1.MsgSubmitProposal> request) async {
+      $async.Future<$0.MsgSubmitProposal> request) async {
     return submitProposal(call, await request);
   }
 
-  $async.Future<$1.MsgVoteResponse> vote_Pre(
-      $grpc.ServiceCall call, $async.Future<$1.MsgVote> request) async {
+  $async.Future<$0.MsgVoteResponse> vote_Pre(
+      $grpc.ServiceCall call, $async.Future<$0.MsgVote> request) async {
     return vote(call, await request);
   }
 
-  $async.Future<$1.MsgDepositResponse> deposit_Pre(
-      $grpc.ServiceCall call, $async.Future<$1.MsgDeposit> request) async {
+  $async.Future<$0.MsgDepositResponse> deposit_Pre(
+      $grpc.ServiceCall call, $async.Future<$0.MsgDeposit> request) async {
     return deposit(call, await request);
   }
 
-  $async.Future<$1.MsgSubmitProposalResponse> submitProposal(
-      $grpc.ServiceCall call, $1.MsgSubmitProposal request);
-  $async.Future<$1.MsgVoteResponse> vote(
-      $grpc.ServiceCall call, $1.MsgVote request);
-  $async.Future<$1.MsgDepositResponse> deposit(
-      $grpc.ServiceCall call, $1.MsgDeposit request);
+  $async.Future<$0.MsgSubmitProposalResponse> submitProposal(
+      $grpc.ServiceCall call, $0.MsgSubmitProposal request);
+  $async.Future<$0.MsgVoteResponse> vote(
+      $grpc.ServiceCall call, $0.MsgVote request);
+  $async.Future<$0.MsgDepositResponse> deposit(
+      $grpc.ServiceCall call, $0.MsgDeposit request);
 }

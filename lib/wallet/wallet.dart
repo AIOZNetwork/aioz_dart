@@ -65,23 +65,22 @@ class Wallet extends Equatable {
     final curvePoint = point * bigInt;
 
     // Get the public key
-    Uint8List publicKeyBytes;
+    var publicKeyBytes = curvePoint!.getEncoded();
 
     // Get the address
     Uint8List address;
     switch (algo) {
       case 'secp256k1':
         {
-          publicKeyBytes = curvePoint!.getEncoded();
           final sha256Digest = SHA256Digest().process(publicKeyBytes);
           address = RIPEMD160Digest().process(sha256Digest);
         }
         break;
       default:
         {
-          publicKeyBytes = curvePoint!.getEncoded(false);
+          var uncompressedPublicKeyBytes = curvePoint.getEncoded(false);
           final keccakDigest =
-              KeccakDigest(256).process(publicKeyBytes.sublist(1));
+              KeccakDigest(256).process(uncompressedPublicKeyBytes.sublist(1));
           address = keccakDigest.sublist(12, 32);
         }
         break;
@@ -234,8 +233,9 @@ class Wallet extends Equatable {
         }
       default:
         {
-          final pk =
-              bytesToUnsignedInt(Uint8List.fromList(publicKey.sublist(1)));
+          final uncompressedPubkey = ecPublicKey.Q!.getEncoded(false);
+          final pk = bytesToUnsignedInt(
+              Uint8List.fromList(uncompressedPubkey.sublist(1)));
           //Implementation for calculating v naively taken from there, I don't understand
           //any of this.
           //https://github.com/web3j/web3j/blob/master/crypto/src/main/java/org/web3j/crypto/Sign.java

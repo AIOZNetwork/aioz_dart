@@ -2,6 +2,8 @@ import 'dart:typed_data';
 
 import 'package:aioz/aioz.dart';
 import 'package:aioz/proto/cosmos/crypto/secp256k1/export.dart' as secp256;
+import 'package:aioz/proto/cosmos/crypto/ethsecp256k1/export.dart'
+    as ethsecp256;
 import 'package:grpc/grpc.dart' as grpc;
 import 'package:http/http.dart' as http;
 import 'package:protobuf/protobuf.dart';
@@ -72,8 +74,21 @@ class TxSigner {
     // chain does not have it yet
     var pubKey = account.pubKey;
     if (pubKey.value.isNotEmpty != true) {
-      final secp256Key = secp256.PubKey.create()..key = wallet.publicKey;
-      pubKey = Codec.serialize(secp256Key);
+      switch (wallet.algo) {
+        case 'secp256k1':
+          {
+            final secp256Key = secp256.PubKey.create()..key = wallet.publicKey;
+            pubKey = Codec.serialize(secp256Key);
+          }
+          break;
+        case 'ethsecp256k1':
+          {
+            final ethsecp256Key = ethsecp256.PubKey.create()
+              ..key = wallet.publicKey;
+            pubKey = Codec.serialize(ethsecp256Key);
+          }
+          break;
+      }
     }
 
     // For SIGN_MODE_DIRECT, calling SetSignatures calls setSignerInfos on

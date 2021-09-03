@@ -1,4 +1,10 @@
 ///
+//  Generated code. Do not modify.
+//  source: cosmos/gov/v1beta1/tx.proto
+//
+// @dart = 2.12
+// ignore_for_file: annotate_overrides,camel_case_types,unnecessary_const,non_constant_identifier_names,library_prefixes,unused_import,unused_shown_name,return_of_invalid_type,unnecessary_this,prefer_final_fields
+
 import 'dart:core' as $core;
 
 import 'package:fixnum/fixnum.dart' as $fixnum;
@@ -6,6 +12,7 @@ import 'package:protobuf/protobuf.dart' as $pb;
 
 import '../../../google/protobuf/any.pb.dart' as $3;
 import '../../base/v1beta1/coin.pb.dart' as $2;
+
 import 'gov.pbenum.dart' as $6;
 
 class MsgSubmitProposal extends $pb.GeneratedMessage {

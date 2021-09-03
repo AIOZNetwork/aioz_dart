@@ -1,16 +1,22 @@
 ///
+//  Generated code. Do not modify.
+//  source: cosmos/vesting/v1beta1/tx.proto
+//
+// @dart = 2.12
+// ignore_for_file: annotate_overrides,camel_case_types,unnecessary_const,non_constant_identifier_names,library_prefixes,unused_import,unused_shown_name,return_of_invalid_type,unnecessary_this,prefer_final_fields
+
 import 'dart:core' as $core;
 
 import 'package:fixnum/fixnum.dart' as $fixnum;
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import '../../base/v1beta1/coin.pb.dart' as $2;
+import '../../base/v1beta1/coin.pb.dart' as $1;
 
 class MsgCreateVestingAccount extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'MsgCreateVestingAccount', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'cosmos.vesting.v1beta1'), createEmptyInstance: create)
     ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'fromAddress')
     ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'toAddress')
-    ..pc<$2.Coin>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'amount', $pb.PbFieldType.PM, subBuilder: $2.Coin.create)
+    ..pc<$1.Coin>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'amount', $pb.PbFieldType.PM, subBuilder: $1.Coin.create)
     ..aInt64(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'endTime')
     ..aOB(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'delayed')
     ..hasRequiredFields = false
@@ -20,7 +26,7 @@ class MsgCreateVestingAccount extends $pb.GeneratedMessage {
   factory MsgCreateVestingAccount({
     $core.String? fromAddress,
     $core.String? toAddress,
-    $core.Iterable<$2.Coin>? amount,
+    $core.Iterable<$1.Coin>? amount,
     $fixnum.Int64? endTime,
     $core.bool? delayed,
   }) {
@@ -82,7 +88,7 @@ class MsgCreateVestingAccount extends $pb.GeneratedMessage {
   void clearToAddress() => clearField(2);
 
   @$pb.TagNumber(3)
-  $core.List<$2.Coin> get amount => $_getList(2);
+  $core.List<$1.Coin> get amount => $_getList(2);
 
   @$pb.TagNumber(4)
   $fixnum.Int64 get endTime => $_getI64(3);

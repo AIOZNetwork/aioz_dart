@@ -1,12 +1,19 @@
 ///
+//  Generated code. Do not modify.
+//  source: cosmos/tx/v1beta1/service.proto
+//
+// @dart = 2.12
+// ignore_for_file: annotate_overrides,camel_case_types,unnecessary_const,non_constant_identifier_names,library_prefixes,unused_import,unused_shown_name,return_of_invalid_type,unnecessary_this,prefer_final_fields
+
 import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import '../../base/abci/v1beta1/abci.pb.dart' as $8;
 import '../../base/query/v1beta1/pagination.pb.dart' as $6;
-import 'service.pbenum.dart';
 import 'tx.pb.dart' as $7;
+import '../../base/abci/v1beta1/abci.pb.dart' as $8;
+
+import 'service.pbenum.dart';
 
 export 'service.pbenum.dart';
 
