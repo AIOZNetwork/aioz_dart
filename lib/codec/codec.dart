@@ -56,6 +56,10 @@ class Codec {
       'PeriodicVestingAccount',
       PeriodicVestingAccount.fromAny,
     ));
+    _accountImpls.add(AccountImpl(
+      'EthAccount',
+      EthAccount.fromAny,
+    ));
 
     _initialized = true;
   }

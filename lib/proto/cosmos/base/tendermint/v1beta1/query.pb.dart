@@ -746,6 +746,7 @@ class VersionInfo extends $pb.GeneratedMessage {
     ..aOS(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'buildTags')
     ..aOS(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'goVersion')
     ..pc<Module>(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'buildDeps', $pb.PbFieldType.PM, subBuilder: Module.create)
+    ..aOS(8, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'cosmosSdkVersion')
     ..hasRequiredFields = false
   ;
 
@@ -758,6 +759,7 @@ class VersionInfo extends $pb.GeneratedMessage {
     $core.String? buildTags,
     $core.String? goVersion,
     $core.Iterable<Module>? buildDeps,
+    $core.String? cosmosSdkVersion,
   }) {
     final _result = create();
     if (name != null) {
@@ -780,6 +782,9 @@ class VersionInfo extends $pb.GeneratedMessage {
     }
     if (buildDeps != null) {
       _result.buildDeps.addAll(buildDeps);
+    }
+    if (cosmosSdkVersion != null) {
+      _result.cosmosSdkVersion = cosmosSdkVersion;
     }
     return _result;
   }
@@ -860,6 +865,15 @@ class VersionInfo extends $pb.GeneratedMessage {
 
   @$pb.TagNumber(7)
   $core.List<Module> get buildDeps => $_getList(6);
+
+  @$pb.TagNumber(8)
+  $core.String get cosmosSdkVersion => $_getSZ(7);
+  @$pb.TagNumber(8)
+  set cosmosSdkVersion($core.String v) { $_setString(7, v); }
+  @$pb.TagNumber(8)
+  $core.bool hasCosmosSdkVersion() => $_has(7);
+  @$pb.TagNumber(8)
+  void clearCosmosSdkVersion() => clearField(8);
 }
 
 class Module extends $pb.GeneratedMessage {

@@ -5,9 +5,10 @@ void main() async {
   // Create a wallet
   final networkInfo = NetworkInfo.fromSingleHost(
     bech32Hrp: 'aioz',
-    host: '10.0.0.77',
-    grpcPort: 19090,
-    httpPort: 11317,
+    host: 'https://grpc-ds.testnet.aioz.network',
+    httpHost: 'https://lcd-ds.testnet.aioz.network',
+    grpcPort: 443,
+    httpPort: 443,
   );
 
   final mnemonic = [
@@ -36,20 +37,41 @@ void main() async {
     'summer',
     'engage',
   ];
-  final wallet = Wallet.derive(mnemonic, networkInfo);
+  final wallet = HdWallet.fromMnemonic(
+    mnemonic.join(' '),
+    prefix: networkInfo.bech32Hrp,
+  );
 
-  print('Wallet Address: ${wallet.hexEip55Address}');
+  // final serialization =
+  //     '{"type":"ethsecp256k1wallet-v1","kdf":{"algorithm":"argon2id","params":{"outputLength":32,"opsLimit":24,"memLimitKib":12288}},"encryption":{"algorithm":"xchacha20poly1305-ietf"},"data":"rP4Id3ck1HgGUvLiokt4OWzsXVPVdBYCtDpLCA/5Bq+3OdbDJ9BgA/v+SH6D4ybdwnizSQMsVJCDKMKbxErbHh6YkMsSLygBRVg1PEhs3QO07ZoNxARWiWIgNajLRwy6f2u1LOC9mBO4zMZSutvoC4wN0AfWB1Yebq+DrOB2yBBHAvEm2FM="}';
+  // final wallet = Wallet.deserialize(serialization, '123123123');
+
+  // final sk = Uint8List.fromList(HEX.decode(
+  //     '7310375b3f76318612266b58cf2397abcc127d1471156f0592e2cebef2140ce5'));
+  // final wallet = Wallet.fromKey(sk, prefix: 'aioz');
+  // print(wallet.serialize('123qweASD!@#'));
+
+  print('Wallet Address: ${wallet.accounts[0].hexAddress}');
 
   // 3. Create and sign the transaction
   final message = bank.MsgSend.create()
-    ..fromAddress = wallet.hexAddress
-    ..toAddress = '0xC5A1da5EC93c0f09F82048A9E820215B537EE433';
-  message.amount.add(Coin.create()
-    ..denom = 'atoz'
-    ..amount = '1000000000');
+    ..fromAddress = wallet.accounts[0].bech32Address
+    ..toAddress = hexToBech32Address(
+        networkInfo.bech32Hrp, '0x70207819eC28FB8cc692A4327C80282006E6476A')
+    ..amount.add(Coin.create()
+      ..amount = '1000000000000000000'
+      ..denom = 'attoaioz');
+
+  final fee = Fee()
+    ..gasLimit = 200000.toInt64()
+    ..amount.add(Coin.create()
+      ..amount = '200000000000000'
+      ..denom = 'attoaioz');
 
   final signer = TxSigner.fromNetworkInfo(networkInfo);
-  final tx = await signer.createAndSign(wallet, [message]);
+  final tx = await signer.createAndSign(
+      wallet, wallet.accounts[0].bech32Address, [message],
+      fee: fee);
 
   // 4. Broadcast the transaction
   final txSender = TxSender.fromNetworkInfo(networkInfo);

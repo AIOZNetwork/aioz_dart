@@ -71,3 +71,14 @@ const PeriodicVestingAccount$json = const {
 
 /// Descriptor for `PeriodicVestingAccount`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List periodicVestingAccountDescriptor = $convert.base64Decode('ChZQZXJpb2RpY1Zlc3RpbmdBY2NvdW50EmIKFGJhc2VfdmVzdGluZ19hY2NvdW50GAEgASgLMiouY29zbW9zLnZlc3RpbmcudjFiZXRhMS5CYXNlVmVzdGluZ0FjY291bnRCBNDeHwFSEmJhc2VWZXN0aW5nQWNjb3VudBI0CgpzdGFydF90aW1lGAIgASgDQhXy3h8ReWFtbDoic3RhcnRfdGltZSJSCXN0YXJ0VGltZRJnCg92ZXN0aW5nX3BlcmlvZHMYAyADKAsyHi5jb3Ntb3MudmVzdGluZy52MWJldGExLlBlcmlvZEIe8t4fFnlhbWw6InZlc3RpbmdfcGVyaW9kcyLI3h8AUg52ZXN0aW5nUGVyaW9kczoIiKAfAJigHwA=');
+@$core.Deprecated('Use permanentLockedAccountDescriptor instead')
+const PermanentLockedAccount$json = const {
+  '1': 'PermanentLockedAccount',
+  '2': const [
+    const {'1': 'base_vesting_account', '3': 1, '4': 1, '5': 11, '6': '.cosmos.vesting.v1beta1.BaseVestingAccount', '8': const {}, '10': 'baseVestingAccount'},
+  ],
+  '7': const {},
+};
+
+/// Descriptor for `PermanentLockedAccount`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List permanentLockedAccountDescriptor = $convert.base64Decode('ChZQZXJtYW5lbnRMb2NrZWRBY2NvdW50EmIKFGJhc2VfdmVzdGluZ19hY2NvdW50GAEgASgLMiouY29zbW9zLnZlc3RpbmcudjFiZXRhMS5CYXNlVmVzdGluZ0FjY291bnRCBNDeHwFSEmJhc2VWZXN0aW5nQWNjb3VudDoIiKAfAJigHwA=');

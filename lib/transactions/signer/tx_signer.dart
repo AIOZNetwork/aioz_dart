@@ -2,7 +2,7 @@ import 'dart:typed_data';
 
 import 'package:aioz/aioz.dart';
 import 'package:aioz/proto/cosmos/crypto/secp256k1/export.dart' as secp256;
-import 'package:aioz/proto/cosmos/crypto/ethsecp256k1/export.dart'
+import 'package:aioz/proto/ethermint/crypto/v1/ethsecp256k1/export.dart'
     as ethsecp256;
 import 'package:grpc/grpc.dart' as grpc;
 import 'package:http/http.dart' as http;
@@ -17,31 +17,33 @@ class TxSigner {
   TxSigner({
     required AuthQuerier authQuerier,
     required NodeQuerier nodeQuerier,
-  })  : _authQuerier = authQuerier,
+  })   : _authQuerier = authQuerier,
         _nodeQuerier = nodeQuerier;
 
   /// Builds a new [TxSigner] from a given gRPC client channel and HTTP client.
   factory TxSigner.build(
     grpc.ClientChannel clientChannel,
     http.Client httpClient,
+    String lcdEndpoint,
   ) {
     return TxSigner(
       authQuerier: AuthQuerier.build(clientChannel),
-      nodeQuerier: NodeQuerier.build(httpClient),
+      nodeQuerier: NodeQuerier.build(httpClient, lcdEndpoint),
     );
   }
 
   /// Builds a new [TxSigner] from the given [NetworkInfo].
   factory TxSigner.fromNetworkInfo(NetworkInfo info) {
     final httpClient = http.Client();
-    return TxSigner.build(info.gRPCChannel, httpClient);
+    return TxSigner.build(info.gRPCChannel, httpClient, info.restEndpoint);
   }
 
   /// Creates a new [Tx] object containing the given [msgs] and signs it using
   /// the provided [wallet].
   /// Optional [TxConfig], memo, gas and fees can be supplied as well.
   Future<Tx> createAndSign(
-    Wallet wallet,
+    IWallet wallet,
+    String signerAddress,
     List<GeneratedMessage> msgs, {
     TxConfig? config,
     String? memo,
@@ -58,17 +60,15 @@ class TxSigner {
     }
 
     // Get the account data and node info from the network
-    final account = await _authQuerier.getAccountData(wallet.hexEip55Address);
+    final account = await _authQuerier.getAccountData(signerAddress);
     if (account == null) {
       throw Exception(
-        'Account ${wallet.hexEip55Address} does not exist on chain',
+        'Account $signerAddress does not exist on chain',
       );
     }
 
     // Get the node info data
-    final nodeInfo = await _nodeQuerier.getNodeInfo(
-      wallet.networkInfo.restEndpoint,
-    );
+    final nodeInfo = await _nodeQuerier.getNodeInfo();
 
     // Get the public key from the account, or generate it if the
     // chain does not have it yet
@@ -77,14 +77,15 @@ class TxSigner {
       switch (wallet.algo) {
         case 'secp256k1':
           {
-            final secp256Key = secp256.PubKey.create()..key = wallet.publicKey;
+            final secp256Key = secp256.PubKey.create()
+              ..key = wallet.publicKey(signerAddress);
             pubKey = Codec.serialize(secp256Key);
           }
           break;
-        case 'ethsecp256k1':
+        case 'eth_secp256k1':
           {
             final ethsecp256Key = ethsecp256.PubKey.create()
-              ..key = wallet.publicKey;
+              ..key = wallet.publicKey(signerAddress);
             pubKey = Codec.serialize(ethsecp256Key);
           }
           break;
@@ -126,7 +127,8 @@ class TxSigner {
     final bytesToSign = handler.getSignBytes(signMode, signerData, tx.getTx());
 
     // Sign those bytes
-    final sigBytes = wallet.sign(Uint8List.fromList(bytesToSign));
+    final sigBytes =
+        wallet.sign(signerAddress, Uint8List.fromList(bytesToSign));
 
     // Construct the SignatureV2 struct
     sigData = SingleSignatureData(signMode: signMode, signature: sigBytes);

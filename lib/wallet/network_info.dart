@@ -42,8 +42,10 @@ class GRPCInfo extends Equatable {
   GRPCInfo({
     required this.host,
     this.port = 9090,
-    this.credentials = const ChannelCredentials.insecure(),
-  });
+    bool isSecure = true,
+  }) : credentials = isSecure
+            ? const ChannelCredentials.secure()
+            : const ChannelCredentials.insecure();
 
   /// Creates a new [ClientChannel] using the optional given options.
   ClientChannel getChannel() {
@@ -147,13 +149,19 @@ class NetworkInfo extends Equatable {
   factory NetworkInfo.fromSingleHost({
     required String bech32Hrp,
     required String host,
+    String? httpHost,
     int grpcPort = 9090,
     int httpPort = 1317,
   }) {
+    httpHost ??= host;
     return NetworkInfo(
       bech32Hrp: bech32Hrp,
-      lcdInfo: LCDInfo(host: host, port: httpPort),
-      grpcInfo: GRPCInfo(host: host, port: grpcPort),
+      lcdInfo: LCDInfo(host: httpHost, port: httpPort),
+      grpcInfo: GRPCInfo(
+        host: host,
+        port: grpcPort,
+        isSecure: host.startsWith('https://'),
+      ),
     );
   }
 

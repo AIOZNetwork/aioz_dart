@@ -6,7 +6,7 @@ set -eo pipefail
 OUT=lib/proto
 PROTO=proto
 THIRD_PARTY=third_party
-COSMOS_VERSION=0.42.5
+COSMOS_VERSION=0.45.3
 
 ## Download the Protobuf files
 # source scripts/get_proto.sh $PROTO $THIRD_PARTY $OUT $COSMOS_VERSION
@@ -18,7 +18,7 @@ for dir in $proto_dirs; do
   $PROTOC -I$THIRD_PARTY/proto $(find "${dir}" -maxdepth 1 -name '*.proto')
 done
 
-# Generate the Cosmos Protobuf implementation
+# Generate the main Protobuf implementation
 proto_dirs=$(find "$PROTO" -path -prune -o -name '*.proto' -print0 | xargs -0 -n1 dirname | sort | uniq)
 for dir in $proto_dirs; do
   $PROTOC -I$PROTO \
@@ -32,6 +32,7 @@ find "$OUT" -name "*.pbserver.dart" -type f -delete
 
 # Clean directories
 rm -r "github.com"
+rm -r "x"
 
 # Generate exports
 source scripts/generate_exports.sh

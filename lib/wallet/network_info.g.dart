@@ -11,7 +11,7 @@ GRPCInfo _$GRPCInfoFromJson(Map<String, dynamic> json) {
   return GRPCInfo(
     host: json['host'] as String,
     port: json['port'] as int? ?? 9090,
-    credentials: channelOptionsFromJson(json['channel_credentials'] as String),
+    isSecure: json['isSecure'] as bool? ?? true,
   );
 }
 

@@ -17,7 +17,7 @@ void main() {
   setUp(() {
     // Clean the dispatcher to avoid cross-testing conflicts
     server.dispatcher = null;
-    querier = NodeQuerier.build(http.Client());
+    querier = NodeQuerier.build(http.Client(), server.url);
   });
 
   group('getNodeInfo', () {
@@ -25,14 +25,14 @@ void main() {
       final file = File('test_resources/x/node/response_node_info.json');
       server.enqueue(httpCode: 200, body: file.readAsStringSync());
 
-      final result = await querier.getNodeInfo(server.url);
+      final result = await querier.getNodeInfo();
       expect(result.network, 'cosmos-hub2');
     });
 
     test('throws exception with wrong response', () async {
       server.enqueue(httpCode: 400);
 
-      expect(() => querier.getNodeInfo(server.url), throwsException);
+      expect(() => querier.getNodeInfo(), throwsException);
     });
   });
 }

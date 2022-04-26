@@ -14,11 +14,7 @@ THIRD_PARTY=$2
 rm -r -f "$THIRD_PARTY"
 mkdir -p "$THIRD_PARTY"
 
-OUT=$3
-rm -r -f "$OUT"
-mkdir -p "$OUT"
-
-COSMOS_VERSION=$4
+COSMOS_VERSION=$3
 
 # Download the Cosmos Protobuf files from the Cosmos SDK
 COSMOS_ZIP="$BUILD/cosmos.zip"

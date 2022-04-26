@@ -34,14 +34,22 @@ void main() {
 
   group('derive', () {
     test('throws exception with invalid mnemonic', () {
-      expect(() => Wallet.derive([], networkInfo), throwsException);
+      expect(
+          () => HdWallet.fromMnemonic(
+                '',
+                prefix: networkInfo.bech32Hrp,
+              ),
+          throwsException);
     });
 
     test('works properly with valid mnemonic', () {
       testVectors.forEach((address, mnemonicString) {
         final mnemonic = mnemonicString.split(' ');
-        final wallet = Wallet.derive(mnemonic, networkInfo);
-        expect(wallet.bech32Address, address);
+        final wallet = HdWallet.fromMnemonic(
+          mnemonic.join(' '),
+          prefix: networkInfo.bech32Hrp,
+        );
+        expect(wallet.accounts[0].bech32Address, address);
       });
     });
   });
@@ -49,11 +57,12 @@ void main() {
   test('random generates different wallets', () {
     final info =
         NetworkInfo.fromSingleHost(bech32Hrp: 'cosmos', host: 'example.com');
-    final wallets = List.generate(20, (index) => Wallet.random(info));
+    final wallets =
+        List.generate(20, (index) => HdWallet.random(prefix: info.bech32Hrp));
 
     final map = HashMap.fromIterable(
       wallets,
-      key: (entry) => (entry as Wallet).bech32Address,
+      key: (entry) => (entry as HdWallet).accounts[0].bech32Address,
       value: (entry) => entry,
     );
     expect(map.entries, hasLength(wallets.length));
@@ -90,27 +99,32 @@ void main() {
     final cosmosInfo =
         NetworkInfo.fromSingleHost(bech32Hrp: 'cosmos', host: 'example.com');
 
-    final wallet = Wallet.derive(mnemonic, cosmosInfo);
-    expect(wallet.bech32Address, cosmosAddr);
+    final wallet = HdWallet.fromMnemonic(
+      mnemonic.join(' '),
+      prefix: cosmosInfo.bech32Hrp,
+    );
+    expect(wallet.accounts[0].bech32Address, cosmosAddr);
 
     final desmosAddr = 'desmos19c506umkrd4ptva9r3gjy7afmjnr4mlgf8ytth';
     final desmosInfo =
         NetworkInfo.fromSingleHost(bech32Hrp: 'desmos', host: 'example.com');
 
-    final converted = Wallet.convert(wallet, desmosInfo);
-    expect(converted.bech32Address, desmosAddr);
+    final converted = HdWallet.convert(wallet, desmosInfo.bech32Hrp);
+    expect(converted.accounts[0].bech32Address, desmosAddr);
   });
 
   test('toJson and fromJson work properly', () {
     final mnemonic =
         'final random flame cinnamon grunt hazard easily mutual resist pond solution define knife female tongue crime atom jaguar alert library best forum lesson rigid'
             .split(' ');
-    final wallet = Wallet.derive(mnemonic, networkInfo);
+    final wallet = HdWallet.fromMnemonic(
+      mnemonic.join(' '),
+      prefix: networkInfo.bech32Hrp,
+    );
 
-    final jsonWallet = wallet.toJson();
+    final jsonWallet = wallet.serialize('12345678');
 
-    final privateKey = wallet.privateKey;
-    final retrievedWallet = Wallet.fromJson(jsonWallet, privateKey);
+    final retrievedWallet = HdWallet.deserialize(jsonWallet, '12345678');
 
     expect(wallet, retrievedWallet);
   });
@@ -143,11 +157,16 @@ void main() {
       'word',
       'man'
     ];
-    final wallet = Wallet.derive(mnemonic, info);
+    final wallet = HdWallet.fromMnemonic(
+      mnemonic.join(' '),
+      prefix: info.bech32Hrp,
+    );
 
     final data = 'Test';
-    final sig1 = HEX.encode(wallet.sign(Uint8List.fromList(utf8.encode(data))));
-    final sig2 = HEX.encode(wallet.sign(Uint8List.fromList(utf8.encode(data))));
+    final sig1 = HEX.encode(wallet.sign(wallet.accounts[0].bech32Address,
+        Uint8List.fromList(utf8.encode(data))));
+    final sig2 = HEX.encode(wallet.sign(wallet.accounts[0].bech32Address,
+        Uint8List.fromList(utf8.encode(data))));
     expect(true, sig1 == sig2);
   });
 
@@ -179,13 +198,13 @@ void main() {
       'answer',
       'cotton',
     ];
-    final wallet = Wallet.derive(
-      mnemonic,
-      info,
-      derivationPath: "m/44'/852'/0'/0/0",
+    final wallet = HdWallet.fromMnemonic(
+      mnemonic.join(' '),
+      prefix: info.bech32Hrp,
+      hdPaths: ["m/44'/852'/0'/0/0"],
     );
     expect(
-      wallet.bech32Address,
+      wallet.accounts[0].bech32Address,
       'desmos1pcvzsr8kfe4lcpm5n60rjrgq0s5qtjh3stjj6p',
     );
   });

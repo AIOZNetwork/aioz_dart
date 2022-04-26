@@ -10,11 +10,11 @@ import 'dart:core' as $core;
 import 'package:fixnum/fixnum.dart' as $fixnum;
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import '../../../tendermint/types/types.pb.dart' as $2;
-import '../../../google/protobuf/timestamp.pb.dart' as $3;
-import '../../../google/protobuf/any.pb.dart' as $4;
-import '../../../google/protobuf/duration.pb.dart' as $5;
-import '../../base/v1beta1/coin.pb.dart' as $6;
+import '../../../tendermint/types/types.pb.dart' as $3;
+import '../../../google/protobuf/timestamp.pb.dart' as $4;
+import '../../../google/protobuf/any.pb.dart' as $5;
+import '../../../google/protobuf/duration.pb.dart' as $6;
+import '../../base/v1beta1/coin.pb.dart' as $2;
 
 import 'staking.pbenum.dart';
 
@@ -22,14 +22,14 @@ export 'staking.pbenum.dart';
 
 class HistoricalInfo extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'HistoricalInfo', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'cosmos.staking.v1beta1'), createEmptyInstance: create)
-    ..aOM<$2.Header>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'header', subBuilder: $2.Header.create)
+    ..aOM<$3.Header>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'header', subBuilder: $3.Header.create)
     ..pc<Validator>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'valset', $pb.PbFieldType.PM, subBuilder: Validator.create)
     ..hasRequiredFields = false
   ;
 
   HistoricalInfo._() : super();
   factory HistoricalInfo({
-    $2.Header? header,
+    $3.Header? header,
     $core.Iterable<Validator>? valset,
   }) {
     final _result = create();
@@ -63,15 +63,15 @@ class HistoricalInfo extends $pb.GeneratedMessage {
   static HistoricalInfo? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $2.Header get header => $_getN(0);
+  $3.Header get header => $_getN(0);
   @$pb.TagNumber(1)
-  set header($2.Header v) { setField(1, v); }
+  set header($3.Header v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasHeader() => $_has(0);
   @$pb.TagNumber(1)
   void clearHeader() => clearField(1);
   @$pb.TagNumber(1)
-  $2.Header ensureHeader() => $_ensure(0);
+  $3.Header ensureHeader() => $_ensure(0);
 
   @$pb.TagNumber(2)
   $core.List<Validator> get valset => $_getList(1);
@@ -155,14 +155,14 @@ class CommissionRates extends $pb.GeneratedMessage {
 class Commission extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'Commission', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'cosmos.staking.v1beta1'), createEmptyInstance: create)
     ..aOM<CommissionRates>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'commissionRates', subBuilder: CommissionRates.create)
-    ..aOM<$3.Timestamp>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'updateTime', subBuilder: $3.Timestamp.create)
+    ..aOM<$4.Timestamp>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'updateTime', subBuilder: $4.Timestamp.create)
     ..hasRequiredFields = false
   ;
 
   Commission._() : super();
   factory Commission({
     CommissionRates? commissionRates,
-    $3.Timestamp? updateTime,
+    $4.Timestamp? updateTime,
   }) {
     final _result = create();
     if (commissionRates != null) {
@@ -206,15 +206,15 @@ class Commission extends $pb.GeneratedMessage {
   CommissionRates ensureCommissionRates() => $_ensure(0);
 
   @$pb.TagNumber(2)
-  $3.Timestamp get updateTime => $_getN(1);
+  $4.Timestamp get updateTime => $_getN(1);
   @$pb.TagNumber(2)
-  set updateTime($3.Timestamp v) { setField(2, v); }
+  set updateTime($4.Timestamp v) { setField(2, v); }
   @$pb.TagNumber(2)
   $core.bool hasUpdateTime() => $_has(1);
   @$pb.TagNumber(2)
   void clearUpdateTime() => clearField(2);
   @$pb.TagNumber(2)
-  $3.Timestamp ensureUpdateTime() => $_ensure(1);
+  $4.Timestamp ensureUpdateTime() => $_ensure(1);
 }
 
 class Description extends $pb.GeneratedMessage {
@@ -323,14 +323,14 @@ class Description extends $pb.GeneratedMessage {
 class Validator extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'Validator', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'cosmos.staking.v1beta1'), createEmptyInstance: create)
     ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'operatorAddress')
-    ..aOM<$4.Any>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'consensusPubkey', subBuilder: $4.Any.create)
+    ..aOM<$5.Any>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'consensusPubkey', subBuilder: $5.Any.create)
     ..aOB(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'jailed')
     ..e<BondStatus>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'status', $pb.PbFieldType.OE, defaultOrMaker: BondStatus.BOND_STATUS_UNSPECIFIED, valueOf: BondStatus.valueOf, enumValues: BondStatus.values)
     ..aOS(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'tokens')
     ..aOS(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'delegatorShares')
     ..aOM<Description>(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'description', subBuilder: Description.create)
     ..aInt64(8, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'unbondingHeight')
-    ..aOM<$3.Timestamp>(9, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'unbondingTime', subBuilder: $3.Timestamp.create)
+    ..aOM<$4.Timestamp>(9, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'unbondingTime', subBuilder: $4.Timestamp.create)
     ..aOM<Commission>(10, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'commission', subBuilder: Commission.create)
     ..aOS(11, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'minSelfDelegation')
     ..hasRequiredFields = false
@@ -339,14 +339,14 @@ class Validator extends $pb.GeneratedMessage {
   Validator._() : super();
   factory Validator({
     $core.String? operatorAddress,
-    $4.Any? consensusPubkey,
+    $5.Any? consensusPubkey,
     $core.bool? jailed,
     BondStatus? status,
     $core.String? tokens,
     $core.String? delegatorShares,
     Description? description,
     $fixnum.Int64? unbondingHeight,
-    $3.Timestamp? unbondingTime,
+    $4.Timestamp? unbondingTime,
     Commission? commission,
     $core.String? minSelfDelegation,
   }) {
@@ -417,15 +417,15 @@ class Validator extends $pb.GeneratedMessage {
   void clearOperatorAddress() => clearField(1);
 
   @$pb.TagNumber(2)
-  $4.Any get consensusPubkey => $_getN(1);
+  $5.Any get consensusPubkey => $_getN(1);
   @$pb.TagNumber(2)
-  set consensusPubkey($4.Any v) { setField(2, v); }
+  set consensusPubkey($5.Any v) { setField(2, v); }
   @$pb.TagNumber(2)
   $core.bool hasConsensusPubkey() => $_has(1);
   @$pb.TagNumber(2)
   void clearConsensusPubkey() => clearField(2);
   @$pb.TagNumber(2)
-  $4.Any ensureConsensusPubkey() => $_ensure(1);
+  $5.Any ensureConsensusPubkey() => $_ensure(1);
 
   @$pb.TagNumber(3)
   $core.bool get jailed => $_getBF(2);
@@ -484,15 +484,15 @@ class Validator extends $pb.GeneratedMessage {
   void clearUnbondingHeight() => clearField(8);
 
   @$pb.TagNumber(9)
-  $3.Timestamp get unbondingTime => $_getN(8);
+  $4.Timestamp get unbondingTime => $_getN(8);
   @$pb.TagNumber(9)
-  set unbondingTime($3.Timestamp v) { setField(9, v); }
+  set unbondingTime($4.Timestamp v) { setField(9, v); }
   @$pb.TagNumber(9)
   $core.bool hasUnbondingTime() => $_has(8);
   @$pb.TagNumber(9)
   void clearUnbondingTime() => clearField(9);
   @$pb.TagNumber(9)
-  $3.Timestamp ensureUnbondingTime() => $_ensure(8);
+  $4.Timestamp ensureUnbondingTime() => $_ensure(8);
 
   @$pb.TagNumber(10)
   Commission get commission => $_getN(9);
@@ -921,7 +921,7 @@ class UnbondingDelegation extends $pb.GeneratedMessage {
 class UnbondingDelegationEntry extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'UnbondingDelegationEntry', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'cosmos.staking.v1beta1'), createEmptyInstance: create)
     ..aInt64(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'creationHeight')
-    ..aOM<$3.Timestamp>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'completionTime', subBuilder: $3.Timestamp.create)
+    ..aOM<$4.Timestamp>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'completionTime', subBuilder: $4.Timestamp.create)
     ..aOS(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'initialBalance')
     ..aOS(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'balance')
     ..hasRequiredFields = false
@@ -930,7 +930,7 @@ class UnbondingDelegationEntry extends $pb.GeneratedMessage {
   UnbondingDelegationEntry._() : super();
   factory UnbondingDelegationEntry({
     $fixnum.Int64? creationHeight,
-    $3.Timestamp? completionTime,
+    $4.Timestamp? completionTime,
     $core.String? initialBalance,
     $core.String? balance,
   }) {
@@ -980,15 +980,15 @@ class UnbondingDelegationEntry extends $pb.GeneratedMessage {
   void clearCreationHeight() => clearField(1);
 
   @$pb.TagNumber(2)
-  $3.Timestamp get completionTime => $_getN(1);
+  $4.Timestamp get completionTime => $_getN(1);
   @$pb.TagNumber(2)
-  set completionTime($3.Timestamp v) { setField(2, v); }
+  set completionTime($4.Timestamp v) { setField(2, v); }
   @$pb.TagNumber(2)
   $core.bool hasCompletionTime() => $_has(1);
   @$pb.TagNumber(2)
   void clearCompletionTime() => clearField(2);
   @$pb.TagNumber(2)
-  $3.Timestamp ensureCompletionTime() => $_ensure(1);
+  $4.Timestamp ensureCompletionTime() => $_ensure(1);
 
   @$pb.TagNumber(3)
   $core.String get initialBalance => $_getSZ(2);
@@ -1012,7 +1012,7 @@ class UnbondingDelegationEntry extends $pb.GeneratedMessage {
 class RedelegationEntry extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'RedelegationEntry', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'cosmos.staking.v1beta1'), createEmptyInstance: create)
     ..aInt64(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'creationHeight')
-    ..aOM<$3.Timestamp>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'completionTime', subBuilder: $3.Timestamp.create)
+    ..aOM<$4.Timestamp>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'completionTime', subBuilder: $4.Timestamp.create)
     ..aOS(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'initialBalance')
     ..aOS(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'sharesDst')
     ..hasRequiredFields = false
@@ -1021,7 +1021,7 @@ class RedelegationEntry extends $pb.GeneratedMessage {
   RedelegationEntry._() : super();
   factory RedelegationEntry({
     $fixnum.Int64? creationHeight,
-    $3.Timestamp? completionTime,
+    $4.Timestamp? completionTime,
     $core.String? initialBalance,
     $core.String? sharesDst,
   }) {
@@ -1071,15 +1071,15 @@ class RedelegationEntry extends $pb.GeneratedMessage {
   void clearCreationHeight() => clearField(1);
 
   @$pb.TagNumber(2)
-  $3.Timestamp get completionTime => $_getN(1);
+  $4.Timestamp get completionTime => $_getN(1);
   @$pb.TagNumber(2)
-  set completionTime($3.Timestamp v) { setField(2, v); }
+  set completionTime($4.Timestamp v) { setField(2, v); }
   @$pb.TagNumber(2)
   $core.bool hasCompletionTime() => $_has(1);
   @$pb.TagNumber(2)
   void clearCompletionTime() => clearField(2);
   @$pb.TagNumber(2)
-  $3.Timestamp ensureCompletionTime() => $_ensure(1);
+  $4.Timestamp ensureCompletionTime() => $_ensure(1);
 
   @$pb.TagNumber(3)
   $core.String get initialBalance => $_getSZ(2);
@@ -1185,7 +1185,7 @@ class Redelegation extends $pb.GeneratedMessage {
 
 class Params extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'Params', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'cosmos.staking.v1beta1'), createEmptyInstance: create)
-    ..aOM<$5.Duration>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'unbondingTime', subBuilder: $5.Duration.create)
+    ..aOM<$6.Duration>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'unbondingTime', subBuilder: $6.Duration.create)
     ..a<$core.int>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'maxValidators', $pb.PbFieldType.OU3)
     ..a<$core.int>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'maxEntries', $pb.PbFieldType.OU3)
     ..a<$core.int>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'historicalEntries', $pb.PbFieldType.OU3)
@@ -1195,7 +1195,7 @@ class Params extends $pb.GeneratedMessage {
 
   Params._() : super();
   factory Params({
-    $5.Duration? unbondingTime,
+    $6.Duration? unbondingTime,
     $core.int? maxValidators,
     $core.int? maxEntries,
     $core.int? historicalEntries,
@@ -1241,15 +1241,15 @@ class Params extends $pb.GeneratedMessage {
   static Params? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $5.Duration get unbondingTime => $_getN(0);
+  $6.Duration get unbondingTime => $_getN(0);
   @$pb.TagNumber(1)
-  set unbondingTime($5.Duration v) { setField(1, v); }
+  set unbondingTime($6.Duration v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasUnbondingTime() => $_has(0);
   @$pb.TagNumber(1)
   void clearUnbondingTime() => clearField(1);
   @$pb.TagNumber(1)
-  $5.Duration ensureUnbondingTime() => $_ensure(0);
+  $6.Duration ensureUnbondingTime() => $_ensure(0);
 
   @$pb.TagNumber(2)
   $core.int get maxValidators => $_getIZ(1);
@@ -1291,14 +1291,14 @@ class Params extends $pb.GeneratedMessage {
 class DelegationResponse extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'DelegationResponse', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'cosmos.staking.v1beta1'), createEmptyInstance: create)
     ..aOM<Delegation>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'delegation', subBuilder: Delegation.create)
-    ..aOM<$6.Coin>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'balance', subBuilder: $6.Coin.create)
+    ..aOM<$2.Coin>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'balance', subBuilder: $2.Coin.create)
     ..hasRequiredFields = false
   ;
 
   DelegationResponse._() : super();
   factory DelegationResponse({
     Delegation? delegation,
-    $6.Coin? balance,
+    $2.Coin? balance,
   }) {
     final _result = create();
     if (delegation != null) {
@@ -1342,15 +1342,15 @@ class DelegationResponse extends $pb.GeneratedMessage {
   Delegation ensureDelegation() => $_ensure(0);
 
   @$pb.TagNumber(2)
-  $6.Coin get balance => $_getN(1);
+  $2.Coin get balance => $_getN(1);
   @$pb.TagNumber(2)
-  set balance($6.Coin v) { setField(2, v); }
+  set balance($2.Coin v) { setField(2, v); }
   @$pb.TagNumber(2)
   $core.bool hasBalance() => $_has(1);
   @$pb.TagNumber(2)
   void clearBalance() => clearField(2);
   @$pb.TagNumber(2)
-  $6.Coin ensureBalance() => $_ensure(1);
+  $2.Coin ensureBalance() => $_ensure(1);
 }
 
 class RedelegationEntryResponse extends $pb.GeneratedMessage {

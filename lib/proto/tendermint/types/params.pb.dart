@@ -10,7 +10,7 @@ import 'dart:core' as $core;
 import 'package:fixnum/fixnum.dart' as $fixnum;
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import '../../google/protobuf/duration.pb.dart' as $7;
+import '../../google/protobuf/duration.pb.dart' as $6;
 
 class ConsensusParams extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'ConsensusParams', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'tendermint.types'), createEmptyInstance: create)
@@ -187,7 +187,7 @@ class BlockParams extends $pb.GeneratedMessage {
 class EvidenceParams extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'EvidenceParams', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'tendermint.types'), createEmptyInstance: create)
     ..aInt64(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'maxAgeNumBlocks')
-    ..aOM<$7.Duration>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'maxAgeDuration', subBuilder: $7.Duration.create)
+    ..aOM<$6.Duration>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'maxAgeDuration', subBuilder: $6.Duration.create)
     ..aInt64(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'maxBytes')
     ..hasRequiredFields = false
   ;
@@ -195,7 +195,7 @@ class EvidenceParams extends $pb.GeneratedMessage {
   EvidenceParams._() : super();
   factory EvidenceParams({
     $fixnum.Int64? maxAgeNumBlocks,
-    $7.Duration? maxAgeDuration,
+    $6.Duration? maxAgeDuration,
     $fixnum.Int64? maxBytes,
   }) {
     final _result = create();
@@ -241,15 +241,15 @@ class EvidenceParams extends $pb.GeneratedMessage {
   void clearMaxAgeNumBlocks() => clearField(1);
 
   @$pb.TagNumber(2)
-  $7.Duration get maxAgeDuration => $_getN(1);
+  $6.Duration get maxAgeDuration => $_getN(1);
   @$pb.TagNumber(2)
-  set maxAgeDuration($7.Duration v) { setField(2, v); }
+  set maxAgeDuration($6.Duration v) { setField(2, v); }
   @$pb.TagNumber(2)
   $core.bool hasMaxAgeDuration() => $_has(1);
   @$pb.TagNumber(2)
   void clearMaxAgeDuration() => clearField(2);
   @$pb.TagNumber(2)
-  $7.Duration ensureMaxAgeDuration() => $_ensure(1);
+  $6.Duration ensureMaxAgeDuration() => $_ensure(1);
 
   @$pb.TagNumber(3)
   $fixnum.Int64 get maxBytes => $_getI64(2);

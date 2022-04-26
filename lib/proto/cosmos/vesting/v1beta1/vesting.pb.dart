@@ -10,25 +10,25 @@ import 'dart:core' as $core;
 import 'package:fixnum/fixnum.dart' as $fixnum;
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import '../../auth/v1beta1/auth.pb.dart' as $2;
-import '../../base/v1beta1/coin.pb.dart' as $1;
+import '../../auth/v1beta1/auth.pb.dart' as $1;
+import '../../base/v1beta1/coin.pb.dart' as $2;
 
 class BaseVestingAccount extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'BaseVestingAccount', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'cosmos.vesting.v1beta1'), createEmptyInstance: create)
-    ..aOM<$2.BaseAccount>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'baseAccount', subBuilder: $2.BaseAccount.create)
-    ..pc<$1.Coin>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'originalVesting', $pb.PbFieldType.PM, subBuilder: $1.Coin.create)
-    ..pc<$1.Coin>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'delegatedFree', $pb.PbFieldType.PM, subBuilder: $1.Coin.create)
-    ..pc<$1.Coin>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'delegatedVesting', $pb.PbFieldType.PM, subBuilder: $1.Coin.create)
+    ..aOM<$1.BaseAccount>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'baseAccount', subBuilder: $1.BaseAccount.create)
+    ..pc<$2.Coin>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'originalVesting', $pb.PbFieldType.PM, subBuilder: $2.Coin.create)
+    ..pc<$2.Coin>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'delegatedFree', $pb.PbFieldType.PM, subBuilder: $2.Coin.create)
+    ..pc<$2.Coin>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'delegatedVesting', $pb.PbFieldType.PM, subBuilder: $2.Coin.create)
     ..aInt64(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'endTime')
     ..hasRequiredFields = false
   ;
 
   BaseVestingAccount._() : super();
   factory BaseVestingAccount({
-    $2.BaseAccount? baseAccount,
-    $core.Iterable<$1.Coin>? originalVesting,
-    $core.Iterable<$1.Coin>? delegatedFree,
-    $core.Iterable<$1.Coin>? delegatedVesting,
+    $1.BaseAccount? baseAccount,
+    $core.Iterable<$2.Coin>? originalVesting,
+    $core.Iterable<$2.Coin>? delegatedFree,
+    $core.Iterable<$2.Coin>? delegatedVesting,
     $fixnum.Int64? endTime,
   }) {
     final _result = create();
@@ -71,24 +71,24 @@ class BaseVestingAccount extends $pb.GeneratedMessage {
   static BaseVestingAccount? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $2.BaseAccount get baseAccount => $_getN(0);
+  $1.BaseAccount get baseAccount => $_getN(0);
   @$pb.TagNumber(1)
-  set baseAccount($2.BaseAccount v) { setField(1, v); }
+  set baseAccount($1.BaseAccount v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasBaseAccount() => $_has(0);
   @$pb.TagNumber(1)
   void clearBaseAccount() => clearField(1);
   @$pb.TagNumber(1)
-  $2.BaseAccount ensureBaseAccount() => $_ensure(0);
+  $1.BaseAccount ensureBaseAccount() => $_ensure(0);
 
   @$pb.TagNumber(2)
-  $core.List<$1.Coin> get originalVesting => $_getList(1);
+  $core.List<$2.Coin> get originalVesting => $_getList(1);
 
   @$pb.TagNumber(3)
-  $core.List<$1.Coin> get delegatedFree => $_getList(2);
+  $core.List<$2.Coin> get delegatedFree => $_getList(2);
 
   @$pb.TagNumber(4)
-  $core.List<$1.Coin> get delegatedVesting => $_getList(3);
+  $core.List<$2.Coin> get delegatedVesting => $_getList(3);
 
   @$pb.TagNumber(5)
   $fixnum.Int64 get endTime => $_getI64(4);
@@ -215,14 +215,14 @@ class DelayedVestingAccount extends $pb.GeneratedMessage {
 class Period extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'Period', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'cosmos.vesting.v1beta1'), createEmptyInstance: create)
     ..aInt64(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'length')
-    ..pc<$1.Coin>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'amount', $pb.PbFieldType.PM, subBuilder: $1.Coin.create)
+    ..pc<$2.Coin>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'amount', $pb.PbFieldType.PM, subBuilder: $2.Coin.create)
     ..hasRequiredFields = false
   ;
 
   Period._() : super();
   factory Period({
     $fixnum.Int64? length,
-    $core.Iterable<$1.Coin>? amount,
+    $core.Iterable<$2.Coin>? amount,
   }) {
     final _result = create();
     if (length != null) {
@@ -264,7 +264,7 @@ class Period extends $pb.GeneratedMessage {
   void clearLength() => clearField(1);
 
   @$pb.TagNumber(2)
-  $core.List<$1.Coin> get amount => $_getList(1);
+  $core.List<$2.Coin> get amount => $_getList(1);
 }
 
 class PeriodicVestingAccount extends $pb.GeneratedMessage {
@@ -336,5 +336,54 @@ class PeriodicVestingAccount extends $pb.GeneratedMessage {
 
   @$pb.TagNumber(3)
   $core.List<Period> get vestingPeriods => $_getList(2);
+}
+
+class PermanentLockedAccount extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'PermanentLockedAccount', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'cosmos.vesting.v1beta1'), createEmptyInstance: create)
+    ..aOM<BaseVestingAccount>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'baseVestingAccount', subBuilder: BaseVestingAccount.create)
+    ..hasRequiredFields = false
+  ;
+
+  PermanentLockedAccount._() : super();
+  factory PermanentLockedAccount({
+    BaseVestingAccount? baseVestingAccount,
+  }) {
+    final _result = create();
+    if (baseVestingAccount != null) {
+      _result.baseVestingAccount = baseVestingAccount;
+    }
+    return _result;
+  }
+  factory PermanentLockedAccount.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory PermanentLockedAccount.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  PermanentLockedAccount clone() => PermanentLockedAccount()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  PermanentLockedAccount copyWith(void Function(PermanentLockedAccount) updates) => super.copyWith((message) => updates(message as PermanentLockedAccount)) as PermanentLockedAccount; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static PermanentLockedAccount create() => PermanentLockedAccount._();
+  PermanentLockedAccount createEmptyInstance() => create();
+  static $pb.PbList<PermanentLockedAccount> createRepeated() => $pb.PbList<PermanentLockedAccount>();
+  @$core.pragma('dart2js:noInline')
+  static PermanentLockedAccount getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<PermanentLockedAccount>(create);
+  static PermanentLockedAccount? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  BaseVestingAccount get baseVestingAccount => $_getN(0);
+  @$pb.TagNumber(1)
+  set baseVestingAccount(BaseVestingAccount v) { setField(1, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasBaseVestingAccount() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearBaseVestingAccount() => clearField(1);
+  @$pb.TagNumber(1)
+  BaseVestingAccount ensureBaseVestingAccount() => $_ensure(0);
 }
 

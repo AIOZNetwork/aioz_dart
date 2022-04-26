@@ -2,13 +2,34 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:aioz/aioz.dart';
-import 'package:aioz/wallet/bech32_encoder.dart';
+import 'package:aioz/sodium/export.dart';
 import 'package:equatable/equatable.dart';
 import 'package:hex/hex.dart';
 import 'package:pointycastle/digests/keccak.dart';
 import 'package:pointycastle/export.dart';
 
-import './ethsecp256k1_utils.dart';
+import 'encryption.dart';
+import 'types.dart';
+import 'ethsecp256k1_utils.dart';
+
+const SECP256K1_SERIALIZATION_TYPE_V1 = 'secp256k1wallet-v1';
+const ETHSECP256K1_SERIALIZATION_TYPE_V1 = 'ethsecp256k1wallet-v1';
+
+class WalletData {
+  final Uint8List privkey;
+  final String prefix;
+
+  WalletData({required this.privkey, required this.prefix});
+
+  WalletData.fromJson(Map<String, dynamic> json)
+      : privkey = Uint8List.fromList(HEX.decode(json['privkey'] as String)),
+        prefix = json['prefix'] as String;
+
+  Map<String, dynamic> toJson() => {
+        'privkey': HEX.encode(privkey),
+        'prefix': prefix,
+      };
+}
 
 /// Represents a wallet which contains the hex private key, the hex public key
 /// and the hex address.
@@ -16,166 +37,183 @@ import './ethsecp256k1_utils.dart';
 /// be used.
 /// The associated [networkInfo] will be used when computing the [hexAddress]
 /// and [bech32Address] associated with the wallet.
-class Wallet extends Equatable {
-  static const DERIVATION_PATH = "m/44'/60'/0'/0/0";
-  static const ALGO = 'ethsecp256k1';
+class Wallet extends IWallet {
+  static const DEFAULT_ALGO = 'eth_secp256k1';
+  static const DEFAULT_BIP39_PASSWORD = '';
+  static const DEFAULT_HD_PATHS = ["m/44'/60'/0'/0/0"];
+  static const DEFAULT_PREFIX = 'aioz';
 
-  final Uint8List address;
-  final Uint8List privateKey;
-  final Uint8List publicKey;
-
+  @override
   final String algo;
+  final Uint8List _privkey;
+  final Uint8List _pubkey;
+  final String _prefix;
 
-  final NetworkInfo networkInfo;
-
-  Wallet({
-    required this.networkInfo,
+  Wallet._({
     required this.algo,
-    required this.address,
-    required this.privateKey,
-    required this.publicKey,
-  });
+    required Uint8List privkey,
+    required Uint8List pubkey,
+    required String prefix,
+  })   : _privkey = privkey,
+        _pubkey = pubkey,
+        _prefix = prefix;
 
   /// Derives the private key from the given [mnemonic] using the specified
   /// [networkInfo].
-  factory Wallet.derive(
-    List<String> mnemonic,
-    NetworkInfo networkInfo, {
-    String derivationPath = DERIVATION_PATH,
-    String algo = ALGO,
+  factory Wallet.fromKey(
+    Uint8List privkey, {
+    String algo = DEFAULT_ALGO,
+    String prefix = DEFAULT_PREFIX,
   }) {
-    // Validate the mnemonic
-    if (!Bip39.validateMnemonic(mnemonic)) {
-      throw Exception('Invalid mnemonic');
-    }
-
-    // Convert the mnemonic to a BIP32 instance
-    final seed = Bip39.mnemonicToSeed(mnemonic);
-    final root = Bip32.fromSeed(seed);
-
-    // Get the node from the derivation path
-    final derivedNode = root.derivePath(derivationPath);
-
     // Get the curve data
     final secp256k1 = ECCurve_secp256k1();
     final point = secp256k1.G;
 
     // Compute the curve point associated to the private key
-    final bigInt = BigInt.parse(HEX.encode(derivedNode.privateKey!), radix: 16);
+    final bigInt = BigInt.parse(HEX.encode(privkey), radix: 16);
     final curvePoint = point * bigInt;
 
     // Get the public key
-    var publicKeyBytes = curvePoint!.getEncoded();
-
-    // Get the address
-    Uint8List address;
-    switch (algo) {
-      case 'secp256k1':
-        {
-          final sha256Digest = SHA256Digest().process(publicKeyBytes);
-          address = RIPEMD160Digest().process(sha256Digest);
-        }
-        break;
-      default:
-        {
-          var uncompressedPublicKeyBytes = curvePoint.getEncoded(false);
-          final keccakDigest =
-              KeccakDigest(256).process(uncompressedPublicKeyBytes.sublist(1));
-          address = keccakDigest.sublist(12, 32);
-        }
-        break;
-    }
+    final pubkey = curvePoint!.getEncoded();
 
     // Return the key bytes
-    return Wallet(
+    return Wallet._(
       algo: algo,
-      address: address,
-      publicKey: publicKeyBytes,
-      privateKey: derivedNode.privateKey!,
-      networkInfo: networkInfo,
-    );
-  }
-
-  /// Generated a new random [Wallet] using the specified [networkInfo]
-  /// and the optional [derivationPath].
-  factory Wallet.random(
-    NetworkInfo networkInfo, {
-    String derivationPath = DERIVATION_PATH,
-  }) {
-    return Wallet.derive(
-      Bip39.generateMnemonic(strength: 256),
-      networkInfo,
-      derivationPath: derivationPath,
+      privkey: privkey,
+      pubkey: pubkey,
+      prefix: prefix,
     );
   }
 
   /// Creates a new [Wallet] instance based on the existent [wallet] for
-  /// the given [networkInfo].
+  /// the given [prefix]].
   factory Wallet.convert(
     Wallet wallet,
-    NetworkInfo networkInfo,
+    String prefix,
   ) {
-    return Wallet(
-      networkInfo: networkInfo,
+    return Wallet._(
       algo: wallet.algo,
-      address: wallet.address,
-      privateKey: wallet.privateKey,
-      publicKey: wallet.publicKey,
+      privkey: wallet._privkey,
+      pubkey: wallet._pubkey,
+      prefix: prefix,
     );
   }
 
-  /// Creates a new [Wallet] instance from the given [json] and [privateKey].
-  factory Wallet.fromJson(
-    Map<String, dynamic> json,
-    Uint8List privateKey,
-  ) {
-    return Wallet(
-      algo: json['algo'] as String,
-      address: Uint8List.fromList(
-          HEX.decode((json['hex_address'] as String).substring(2))),
-      publicKey: Uint8List.fromList(HEX.decode(json['public_key'] as String)),
-      privateKey: privateKey,
-      networkInfo: NetworkInfo.fromJson(
-        json['network_info'] as Map<String, dynamic>,
-      ),
-    );
-  }
-
-  /// Returns the associated [address] as a Bech32 string.
-  String get bech32Address {
-    return Bech32Encoder.encode(networkInfo.bech32Hrp, address);
-  }
-
-  /// Returns the associated [address] as a hex string.
-  String get hexAddress {
-    return '0x${HEX.encode(address)}';
-  }
-
-  String get hexEip55Address {
-    // https://eips.ethereum.org/EIPS/eip-55#implementation
-    final hex = HEX.encode(address);
-    final hash = HEX.encode(KeccakDigest(256).process(ascii.encode(hex)));
-
-    final eip55 = StringBuffer('0x');
-    for (var i = 0; i < hex.length; i++) {
-      if (int.parse(hash[i], radix: 16) >= 8) {
-        eip55.write(hex[i].toUpperCase());
-      } else {
-        eip55.write(hex[i]);
-      }
+  factory Wallet.deserialize(String serialization, String password) {
+    final json = jsonDecode(serialization);
+    if (!(json is Map)) {
+      throw Exception('Root document is not an object.');
     }
+    final doc = WalletSerialization.fromJson(json as Map<String, dynamic>);
+    switch (doc.type) {
+      case SECP256K1_SERIALIZATION_TYPE_V1:
+      case ETHSECP256K1_SERIALIZATION_TYPE_V1:
+        return Wallet._deserializeTypeV1(doc, password);
+      default:
+        throw Exception('Unsupported serialization type');
+    }
+  }
 
-    return eip55.toString();
+  factory Wallet._deserializeTypeV1(WalletSerialization doc, String password) {
+    final encryptionKey = executeKdf(password, doc.kdf);
+    return Wallet.deserializeWithEncryptionKey(doc, encryptionKey);
+  }
+
+  factory Wallet.deserializeWithEncryptionKey(
+      WalletSerialization doc, Uint8List encryptionKey) {
+    switch (doc.type) {
+      case SECP256K1_SERIALIZATION_TYPE_V1:
+      case ETHSECP256K1_SERIALIZATION_TYPE_V1:
+        {
+          final decryptedBytes = decrypt(
+            base64Decode(doc.data),
+            encryptionKey,
+            doc.encryption,
+          );
+          final decryptedDocument =
+              jsonDecode(String.fromCharCodes(decryptedBytes))
+                  as Map<String, dynamic>;
+          final decryptedData = WalletData.fromJson(decryptedDocument);
+          return Wallet.fromKey(
+            decryptedData.privkey,
+            algo: doc.type == SECP256K1_SERIALIZATION_TYPE_V1
+                ? 'secp256k1'
+                : 'eth_secp256k1',
+            prefix: decryptedData.prefix,
+          );
+        }
+      default:
+        throw Exception('Unsupported serialization type');
+    }
+  }
+
+  Uint8List get _rawAddress {
+    // Get the address
+    switch (algo) {
+      case 'secp256k1':
+        {
+          final sha256Digest = SHA256Digest().process(_pubkey);
+          return RIPEMD160Digest().process(sha256Digest);
+        }
+        break;
+      case 'eth_secp256k1':
+        {
+          final secp256k1 = ECCurve_secp256k1();
+          final curvePoint = secp256k1.curve.decodePoint(_pubkey);
+          final uncompressedPubkey = curvePoint?.getEncoded(false);
+          final keccakDigest =
+              KeccakDigest(256).process(uncompressedPubkey!.sublist(1));
+          return keccakDigest.sublist(12, 32);
+        }
+        break;
+      default:
+        throw Exception('unsupported algorithm');
+    }
+  }
+
+  String get _bech32Address => rawToBech32Address(_prefix, _rawAddress);
+
+  String get _hexAddress => rawToHexAddress(_rawAddress);
+
+  @override
+  Uint8List publicKey(String bech32Address) {
+    if (bech32Address != _bech32Address) {
+      throw Exception('invalid bech32 address');
+    }
+    return _pubkey;
+  }
+
+  List<AccountData> get accounts {
+    return [
+      AccountData(
+        bech32Address: _bech32Address,
+        hexAddress: _hexAddress,
+        algo: algo,
+        pubkey: _pubkey,
+      )
+    ];
+  }
+
+  List<AccountDataWithPrivkey> get accountsWithPrivkey {
+    return [
+      AccountDataWithPrivkey(
+        bech32Address: _bech32Address,
+        hexAddress: _hexAddress,
+        algo: algo,
+        pubkey: _pubkey,
+        privkey: _privkey,
+      )
+    ];
   }
 
   /// Returns the associated [privateKey] as an [ECPrivateKey] instance.
   ECPrivateKey get _ecPrivateKey {
-    final privateKeyInt = BigInt.parse(HEX.encode(privateKey), radix: 16);
+    final privateKeyInt = BigInt.parse(HEX.encode(_privkey), radix: 16);
     return ECPrivateKey(privateKeyInt, ECCurve_secp256k1());
   }
 
   /// Returns the associated [publicKey] as an [ECPublicKey] instance.
-  ECPublicKey get ecPublicKey {
+  ECPublicKey get _ecPublicKey {
     final secp256k1 = ECCurve_secp256k1();
     final point = secp256k1.G;
     final curvePoint = point * _ecPrivateKey.d;
@@ -200,7 +238,12 @@ class Wallet extends Equatable {
   /// Hashes the given [data] with SHA-256, and then sign the hash using the
   /// private key associated with this wallet, returning the signature
   /// encoded as a 64 bytes array.
-  Uint8List sign(Uint8List data) {
+  @override
+  Uint8List sign(String signerAddress, Uint8List data) {
+    if (signerAddress != _bech32Address) {
+      throw Exception('invalid bech32 address');
+    }
+
     Uint8List hash;
     switch (algo) {
       case 'secp256k1':
@@ -214,8 +257,9 @@ class Wallet extends Equatable {
         }
         break;
     }
+    final ecPrivateKey = _ecPrivateKey;
     final ecdsaSigner = ECDSASigner(null, HMac(SHA256Digest(), 64))
-      ..init(true, PrivateKeyParameter(_ecPrivateKey));
+      ..init(true, PrivateKeyParameter(ecPrivateKey));
 
     final params = ECCurve_secp256k1();
     final ecSignature = ecdsaSigner.generateSignature(hash) as ECSignature;
@@ -233,7 +277,7 @@ class Wallet extends Equatable {
         }
       default:
         {
-          final uncompressedPubkey = ecPublicKey.Q!.getEncoded(false);
+          final uncompressedPubkey = _ecPublicKey.Q!.getEncoded(false);
           final pk = bytesToUnsignedInt(
               Uint8List.fromList(uncompressedPubkey.sublist(1)));
           //Implementation for calculating v naively taken from there, I don't understand
@@ -262,36 +306,53 @@ class Wallet extends Equatable {
     }
   }
 
-  /// Converts the current [Wallet] instance into a JSON object.
-  /// Note that the private key is not serialized for safety reasons.
-  Map<String, dynamic> toJson() {
-    return <String, dynamic>{
-      'algo': algo,
-      'hex_address': hexAddress,
-      'bech32_address': bech32Address,
-      'public_key': HEX.encode(publicKey),
-      'network_info': networkInfo.toJson(),
-    };
+  // @override
+  // List<Object> get props {
+  //   return [
+  //     networkInfo,
+  //     algo,
+  //     address,
+  //     privateKey,
+  //     publicKey,
+  //   ];
+  // }
+
+  // @override
+  // String toString() {
+  //   return '{ '
+  //       'networkInfo: $networkInfo, '
+  //       'algo: $algo, '
+  //       'address: $address, '
+  //       'publicKey: $publicKey '
+  //       '}';
+  // }
+
+  String serialize(String password) {
+    final kdfConfiguration = basicPasswordHashingOptions;
+    final encryptionKey = executeKdf(password, kdfConfiguration);
+    return serializeWithEncryptionKey(encryptionKey, kdfConfiguration);
   }
 
-  @override
-  List<Object> get props {
-    return [
-      networkInfo,
-      algo,
-      address,
-      privateKey,
-      publicKey,
-    ];
-  }
+  String serializeWithEncryptionKey(
+      Uint8List encryptionKey, KdfConfiguration kdfConfiguration) {
+    Sodium.init();
+    final data = WalletData(privkey: _privkey, prefix: _prefix);
+    final dataRaw = Uint8List.fromList(jsonEncode(data).codeUnits);
 
-  @override
-  String toString() {
-    return '{ '
-        'networkInfo: $networkInfo, '
-        'algo: $algo, '
-        'address: $address, '
-        'publicKey: $publicKey '
-        '}';
+    final encryptionConfiguration = EncryptionConfiguration(
+      algorithm: ALGO_XCHACHA20POLY1305_IETF,
+    );
+    final encryptedData =
+        encrypt(dataRaw, encryptionKey, encryptionConfiguration);
+
+    final out = WalletSerialization(
+      type: algo == 'secp256k1'
+          ? SECP256K1_SERIALIZATION_TYPE_V1
+          : ETHSECP256K1_SERIALIZATION_TYPE_V1,
+      kdf: kdfConfiguration,
+      encryption: encryptionConfiguration,
+      data: base64Encode(encryptedData),
+    );
+    return jsonEncode(out);
   }
 }

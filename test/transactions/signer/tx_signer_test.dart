@@ -64,7 +64,7 @@ void main() {
       return Future.value(BaseAccount(account));
     });
 
-    when(nodeQuerier.getNodeInfo(networkInfo.restEndpoint)).thenAnswer((_) {
+    when(nodeQuerier.getNodeInfo()).thenAnswer((_) {
       return Future.value(NodeInfo(network: 'cosmos-hub2'));
     });
 
@@ -79,8 +79,10 @@ void main() {
     );
 
     // Create a wallet
-    final wallet = Wallet.derive(mnemonic, networkInfo);
-    expect(wallet.networkInfo, networkInfo);
+    final wallet = HdWallet.fromMnemonic(
+      mnemonic.join(' '),
+      prefix: networkInfo.bech32Hrp,
+    );
 
     // Sign the transaction
     final fee = Fee();
@@ -92,6 +94,7 @@ void main() {
     );
     final signedTx = await signer.createAndSign(
       wallet,
+      wallet.accounts[0].bech32Address,
       [msg],
       fee: fee,
     );
@@ -114,7 +117,7 @@ void main() {
       return Future.value(BaseAccount(account));
     });
 
-    when(nodeQuerier.getNodeInfo(networkInfo.restEndpoint)).thenAnswer((_) {
+    when(nodeQuerier.getNodeInfo()).thenAnswer((_) {
       return Future.value(NodeInfo(network: 'testchain'));
     });
 
@@ -129,8 +132,10 @@ void main() {
     );
 
     // Create a wallet
-    final wallet = Wallet.derive(mnemonic, networkInfo);
-    expect(wallet.networkInfo, networkInfo);
+    final wallet = HdWallet.fromMnemonic(
+      mnemonic.join(' '),
+      prefix: networkInfo.bech32Hrp,
+    );
 
     // Sign the transaction
     final fee = Fee();
@@ -142,6 +147,7 @@ void main() {
     );
     final signedTx = await signer.createAndSign(
       wallet,
+      wallet.accounts[0].bech32Address,
       [msg],
       fee: fee,
     );

@@ -10,13 +10,13 @@ import 'dart:core' as $core;
 import 'package:protobuf/protobuf.dart' as $pb;
 
 import 'types.pb.dart' as $5;
-import 'evidence.pb.dart' as $6;
+import 'evidence.pb.dart' as $7;
 
 class Block extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'Block', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'tendermint.types'), createEmptyInstance: create)
     ..aOM<$5.Header>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'header', subBuilder: $5.Header.create)
     ..aOM<$5.Data>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'data', subBuilder: $5.Data.create)
-    ..aOM<$6.EvidenceList>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'evidence', subBuilder: $6.EvidenceList.create)
+    ..aOM<$7.EvidenceList>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'evidence', subBuilder: $7.EvidenceList.create)
     ..aOM<$5.Commit>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'lastCommit', subBuilder: $5.Commit.create)
     ..hasRequiredFields = false
   ;
@@ -25,7 +25,7 @@ class Block extends $pb.GeneratedMessage {
   factory Block({
     $5.Header? header,
     $5.Data? data,
-    $6.EvidenceList? evidence,
+    $7.EvidenceList? evidence,
     $5.Commit? lastCommit,
   }) {
     final _result = create();
@@ -87,15 +87,15 @@ class Block extends $pb.GeneratedMessage {
   $5.Data ensureData() => $_ensure(1);
 
   @$pb.TagNumber(3)
-  $6.EvidenceList get evidence => $_getN(2);
+  $7.EvidenceList get evidence => $_getN(2);
   @$pb.TagNumber(3)
-  set evidence($6.EvidenceList v) { setField(3, v); }
+  set evidence($7.EvidenceList v) { setField(3, v); }
   @$pb.TagNumber(3)
   $core.bool hasEvidence() => $_has(2);
   @$pb.TagNumber(3)
   void clearEvidence() => clearField(3);
   @$pb.TagNumber(3)
-  $6.EvidenceList ensureEvidence() => $_ensure(2);
+  $7.EvidenceList ensureEvidence() => $_ensure(2);
 
   @$pb.TagNumber(4)
   $5.Commit get lastCommit => $_getN(3);
