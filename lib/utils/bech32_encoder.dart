@@ -54,6 +54,7 @@ class Bech32Encoder {
   static Uint8List decode(String data) {
     final bech32Codec = Bech32Codec();
     final bech32Data = bech32Codec.decode(data);
-    return Uint8List.fromList(bech32Data.data);
+    final converted = _convertBits(bech32Data.data, 5, 8);
+    return converted;
   }
 }
