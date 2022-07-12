@@ -1,5 +1,9 @@
 import 'package:aioz/aioz.dart';
 import 'package:aioz/proto/cosmos/bank/v1beta1/export.dart' as bank;
+import 'package:aioz/proto/ibc/applications/transfer/v1/export.dart'
+    as ibc_transfer;
+import 'package:aioz/proto/ibc/core/client/v1/export.dart' as ibc_client;
+import 'package:fixnum/fixnum.dart';
 
 void main() async {
   // Create a wallet
@@ -54,13 +58,26 @@ void main() async {
   print('Wallet Address: ${wallet.accounts[0].hexAddress}');
 
   // 3. Create and sign the transaction
-  final message = bank.MsgSend.create()
-    ..fromAddress = wallet.accounts[0].bech32Address
-    ..toAddress = hexToBech32Address(
-        networkInfo.bech32Hrp, '0x70207819eC28FB8cc692A4327C80282006E6476A')
-    ..amount.add(Coin.create()
+  // final message = bank.MsgSend.create()
+  //   ..fromAddress = wallet.accounts[0].bech32Address
+  //   ..toAddress = hexToBech32Address(
+  //       networkInfo.bech32Hrp, '0x70207819eC28FB8cc692A4327C80282006E6476A')
+  //   ..amount.add(Coin.create()
+  //     ..amount = '1000000000000000000'
+  //     ..denom = 'attoaioz');
+
+  final message = ibc_transfer.MsgTransfer.create()
+    ..sender = wallet.accounts[0].bech32Address
+    ..receiver = 'cosmos1davg4s96ulrya44njxgzdstlyau69fuvlyn2x4'
+    ..token = (Coin.create()
       ..amount = '1000000000000000000'
-      ..denom = 'attoaioz');
+      ..denom = 'attoaioz')
+    ..sourcePort = 'transfer'
+    ..sourceChannel = 'channel-8'
+    ..timeoutHeight = ibc_client.Height.create()
+    ..timeoutTimestamp =
+        Int64(DateTime.now().microsecondsSinceEpoch * 1000 + 5000000000000);
+
 
   final fee = Fee()
     ..gasLimit = 200000.toInt64()
