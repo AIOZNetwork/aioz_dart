@@ -3,13 +3,10 @@ import 'dart:typed_data';
 
 import 'package:aioz/aioz.dart';
 import 'package:aioz/sodium/export.dart';
-import 'package:equatable/equatable.dart';
 import 'package:hex/hex.dart';
-import 'package:pointycastle/digests/keccak.dart';
 import 'package:pointycastle/export.dart';
 
 import 'encryption.dart';
-import 'types.dart';
 import 'ethsecp256k1_utils.dart';
 
 const SECP256K1_SERIALIZATION_TYPE_V1 = 'secp256k1wallet-v1';
@@ -54,7 +51,7 @@ class Wallet extends IWallet {
     required Uint8List privkey,
     required Uint8List pubkey,
     required String prefix,
-  })   : _privkey = privkey,
+  })  : _privkey = privkey,
         _pubkey = pubkey,
         _prefix = prefix;
 
@@ -155,7 +152,6 @@ class Wallet extends IWallet {
           final sha256Digest = SHA256Digest().process(_pubkey);
           return RIPEMD160Digest().process(sha256Digest);
         }
-        break;
       case 'eth_secp256k1':
         {
           final secp256k1 = ECCurve_secp256k1();
@@ -165,7 +161,6 @@ class Wallet extends IWallet {
               KeccakDigest(256).process(uncompressedPubkey!.sublist(1));
           return keccakDigest.sublist(12, 32);
         }
-        break;
       default:
         throw Exception('unsupported algorithm');
     }

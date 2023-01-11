@@ -6,8 +6,6 @@ import 'package:aioz/proto/ethermint/types/v1/account.pb.dart' as acc;
 import 'package:hex/hex.dart';
 import 'package:pointycastle/digests/keccak.dart';
 
-import 'account.dart';
-
 final emptyCodeHash = HEX.encode(KeccakDigest(256).process(Uint8List(0)));
 
 const int AccountTypeEOA = 1;

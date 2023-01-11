@@ -4,14 +4,10 @@ import 'dart:typed_data';
 import 'package:aioz/aioz.dart';
 import 'package:aioz/sodium/export.dart';
 import 'package:bip39/bip39.dart';
-import 'package:equatable/equatable.dart';
 import 'package:hex/hex.dart';
-import 'package:pointycastle/digests/keccak.dart';
 import 'package:pointycastle/export.dart';
 
 import 'encryption.dart';
-import 'export.dart';
-import 'types.dart';
 import 'ethsecp256k1_utils.dart';
 
 const SECP256K1_HD_SERIALIZATION_TYPE_V1 = 'secp256k1hdwallet-v1';

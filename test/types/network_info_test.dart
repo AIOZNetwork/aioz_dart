@@ -1,5 +1,4 @@
 import 'package:aioz/aioz.dart';
-import 'package:grpc/grpc.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -9,7 +8,7 @@ void main() {
         final grpcInfo = GRPCInfo(
           host: 'localhost',
           port: 1111,
-          credentials: ChannelCredentials.secure(),
+          isSecure: true,
         );
 
         final json = grpcInfo.toJson();
@@ -21,7 +20,7 @@ void main() {
         final grpcInfo = GRPCInfo(
           host: 'localhost',
           port: 1111,
-          credentials: ChannelCredentials.insecure(),
+          isSecure: false,
         );
 
         final json = grpcInfo.toJson();

@@ -10,9 +10,7 @@ void main() async {
   final networkInfo = NetworkInfo.fromSingleHost(
     bech32Hrp: 'aioz',
     host: 'https://grpc-ds.testnet.aioz.network',
-    httpHost: 'https://lcd-ds.testnet.aioz.network',
-    grpcPort: 443,
-    httpPort: 443,
+    port: 443,
   );
 
   final mnemonic = [

@@ -1,5 +1,4 @@
 import 'package:aioz/aioz.dart';
-import 'package:aioz/proto/cosmos/base/abci/v1beta1/export.dart';
 import 'package:aioz/proto/cosmos/tx/v1beta1/export.dart' as tx;
 import 'package:grpc/grpc.dart';
 

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:aioz/aioz.dart';
 import 'package:aioz/proto/cosmos/auth/v1beta1/export.dart' as auth;
 import 'package:aioz/proto/cosmos/bank/v1beta1/export.dart' as bank;
+import 'package:aioz/proto/tendermint/p2p/export.dart' as p2p;
 import 'package:fixnum/fixnum.dart' as fixnum;
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -10,17 +11,17 @@ import 'package:test/test.dart';
 
 import 'tx_signer_test.mocks.dart';
 
-@GenerateMocks([AuthQuerier, NodeQuerier])
+@GenerateMocks([AuthQuerier, TendermintService])
 void main() {
   late AuthQuerier authQuerier;
-  late NodeQuerier nodeQuerier;
+  late TendermintService nodeQuerier;
 
   late TxSigner signer;
 
   setUp(() {
     authQuerier = MockAuthQuerier();
-    nodeQuerier = MockNodeQuerier();
-    signer = TxSigner(authQuerier: authQuerier, nodeQuerier: nodeQuerier);
+    nodeQuerier = MockTendermintService();
+    signer = TxSigner(authQuerier: authQuerier, tmService: nodeQuerier);
   });
 
   final networkInfo = NetworkInfo.fromSingleHost(
@@ -65,7 +66,7 @@ void main() {
     });
 
     when(nodeQuerier.getNodeInfo()).thenAnswer((_) {
-      return Future.value(NodeInfo(network: 'cosmos-hub2'));
+      return Future.value(p2p.DefaultNodeInfo(network: 'cosmos-hub2'));
     });
 
     // Build a transaction
@@ -118,7 +119,7 @@ void main() {
     });
 
     when(nodeQuerier.getNodeInfo()).thenAnswer((_) {
-      return Future.value(NodeInfo(network: 'testchain'));
+      return Future.value(p2p.DefaultNodeInfo(network: 'testchain'));
     });
 
     // Build a transaction

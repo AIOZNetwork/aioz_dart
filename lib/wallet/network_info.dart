@@ -82,49 +82,6 @@ class GRPCInfo extends Equatable {
   }
 }
 
-/// Contains the information about the LCD endpoint
-@JsonSerializable(explicitToJson: true)
-class LCDInfo extends Equatable {
-  @JsonKey(name: 'host', required: true)
-  final String host;
-
-  @JsonKey(name: 'port', defaultValue: 1317)
-  final int port;
-
-  LCDInfo({
-    required this.host,
-    this.port = 1317,
-  });
-
-  factory LCDInfo.fromJson(Map<String, dynamic> json) {
-    return _$LCDInfoFromJson(json);
-  }
-
-  Map<String, dynamic> toJson() {
-    return _$LCDInfoToJson(this);
-  }
-
-  /// Returns the full URL of the LCD endpoint
-  String get fullUrl {
-    var hostWithProtocol = host;
-    if (!hostWithProtocol.startsWith(RegExp('http(s)?:\/\/'))) {
-      hostWithProtocol = 'http://$hostWithProtocol';
-    }
-    return '$hostWithProtocol:$port';
-  }
-
-  @override
-  List<Object?> get props => [host, port];
-
-  @override
-  String toString() {
-    return 'LCDInfo {'
-        'host: $host, '
-        'port: $port '
-        '}';
-  }
-}
-
 /// Contains the information of a generic Cosmos-based network.
 @JsonSerializable(explicitToJson: true)
 class NetworkInfo extends Equatable {
@@ -132,34 +89,25 @@ class NetworkInfo extends Equatable {
   @JsonKey(name: 'bech32_hrp', required: true)
   final String bech32Hrp;
 
-  /// Information about the LCD endpoint to use
-  @JsonKey(name: 'lcdInfo')
-  final LCDInfo lcdInfo;
-
   /// Information about the gRPC endpoint to use
   @JsonKey(name: 'grpcInfo')
   final GRPCInfo grpcInfo;
 
   NetworkInfo({
     required this.bech32Hrp,
-    required this.lcdInfo,
     required this.grpcInfo,
   });
 
   factory NetworkInfo.fromSingleHost({
     required String bech32Hrp,
     required String host,
-    String? httpHost,
-    int grpcPort = 9090,
-    int httpPort = 1317,
+    int port = 9090,
   }) {
-    httpHost ??= host;
     return NetworkInfo(
       bech32Hrp: bech32Hrp,
-      lcdInfo: LCDInfo(host: httpHost, port: httpPort),
       grpcInfo: GRPCInfo(
         host: host,
-        port: grpcPort,
+        port: port,
         isSecure: host.startsWith('https://'),
       ),
     );
@@ -179,22 +127,15 @@ class NetworkInfo extends Equatable {
     return grpcInfo.getChannel();
   }
 
-  /// Returns the endpoint of the REST APIs that should be used to perform
-  /// legacy queries.
-  String get restEndpoint {
-    return lcdInfo.fullUrl;
-  }
-
   @override
   List<Object> get props {
-    return [bech32Hrp, lcdInfo, grpcInfo];
+    return [bech32Hrp, grpcInfo];
   }
 
   @override
   String toString() {
     return '{ '
         'bech32: $bech32Hrp, '
-        'lcdInfo: $lcdInfo, '
         'grpcInfo: $grpcInfo '
         '}';
   }

@@ -5,37 +5,31 @@ import 'package:aioz/proto/cosmos/crypto/secp256k1/export.dart' as secp256;
 import 'package:aioz/proto/ethermint/crypto/v1/ethsecp256k1/export.dart'
     as ethsecp256;
 import 'package:grpc/grpc.dart' as grpc;
-import 'package:http/http.dart' as http;
 import 'package:protobuf/protobuf.dart';
 
 /// Allows to create and sign a [Tx] object so that it can later
 /// be sent to the chain.
 class TxSigner {
   final AuthQuerier _authQuerier;
-  final NodeQuerier _nodeQuerier;
+  final TendermintService _tmService;
 
   TxSigner({
     required AuthQuerier authQuerier,
-    required NodeQuerier nodeQuerier,
-  })   : _authQuerier = authQuerier,
-        _nodeQuerier = nodeQuerier;
+    required TendermintService tmService,
+  })  : _authQuerier = authQuerier,
+        _tmService = tmService;
 
   /// Builds a new [TxSigner] from a given gRPC client channel and HTTP client.
-  factory TxSigner.build(
-    grpc.ClientChannel clientChannel,
-    http.Client httpClient,
-    String lcdEndpoint,
-  ) {
+  factory TxSigner.build(grpc.ClientChannel clientChannel) {
     return TxSigner(
       authQuerier: AuthQuerier.build(clientChannel),
-      nodeQuerier: NodeQuerier.build(httpClient, lcdEndpoint),
+      tmService: TendermintService.build(clientChannel),
     );
   }
 
   /// Builds a new [TxSigner] from the given [NetworkInfo].
   factory TxSigner.fromNetworkInfo(NetworkInfo info) {
-    final httpClient = http.Client();
-    return TxSigner.build(info.gRPCChannel, httpClient, info.restEndpoint);
+    return TxSigner.build(info.gRPCChannel);
   }
 
   /// Creates a new [Tx] object containing the given [msgs] and signs it using
@@ -68,7 +62,7 @@ class TxSigner {
     }
 
     // Get the node info data
-    final nodeInfo = await _nodeQuerier.getNodeInfo();
+    final nodeInfo = await _tmService.getNodeInfo();
 
     // Get the public key from the account, or generate it if the
     // chain does not have it yet
